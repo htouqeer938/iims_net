@@ -8,6 +8,9 @@ using Microsoft.Extensions.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using WebAPI.Models;
+using Microsoft.AspNetCore.Components.Forms;
+using System.IO;
+using Microsoft.Extensions.Hosting;
 
 namespace WebAPI.Controllers
 {
@@ -16,30 +19,39 @@ namespace WebAPI.Controllers
     public class EmployeeController : ControllerBase
     {
         private readonly IConfiguration _configuration;
-        public EmployeeController(IConfiguration configuration)
+        private readonly IWebHostEnvironment _env;
+        public EmployeeController(IConfiguration configuration, IWebHostEnvironment env)
         {
             _configuration = configuration;
+            _env = env;
         }
 
         [HttpGet]
         public JsonResult Get()
         {
-            string query = @"select * from Employee";
-            DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("IIMSAppCon");
-            SqlDataReader myReader;
-            using (SqlConnection con = new SqlConnection(sqlDataSource))
+            try
             {
-                con.Open();
-                using(SqlCommand cmd = new SqlCommand(query, con))
+                string query = @"select * from Employee";
+                DataTable table = new DataTable();
+                string sqlDataSource = _configuration.GetConnectionString("IIMSAppCon");
+                SqlDataReader myReader;
+                using (SqlConnection con = new SqlConnection(sqlDataSource))
                 {
-                    myReader = cmd.ExecuteReader();
-                    table.Load(myReader);
-                    myReader.Close();
-                    con.Close();
+                    con.Open();
+                    using (SqlCommand cmd = new SqlCommand(query, con))
+                    {
+                        myReader = cmd.ExecuteReader();
+                        table.Load(myReader);
+                        myReader.Close();
+                        con.Close();
+                    }
+                    Console.WriteLine("Table", table);
+                    return new JsonResult(table);
                 }
-                Console.WriteLine("Table", table);
-                return new JsonResult(table);
+            }
+            catch(Exception)
+            {
+                return new JsonResult("Some Erro in API");
             }
         }
     }
