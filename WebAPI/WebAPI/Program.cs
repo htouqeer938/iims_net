@@ -1,19 +1,19 @@
-using System;
-using System.IO;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.FileProviders;
 using Newtonsoft.Json.Serialization;
+// Cors
+var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Cors
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: MyAllowSpecificOrigins,
+       policy =>
+          {
+              policy.WithOrigins("http://localhost:4200");
+          });
+});
 
 // Add services to the container.
 // builder.Services.AddControllers();
@@ -23,7 +23,6 @@ builder.Services.AddControllers()
   options.SerializerSettings.ContractResolver =
         new CamelCasePropertyNamesContractResolver());
 
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -38,12 +37,14 @@ if (app.Environment.IsDevelopment())
 
 app.UseAuthorization();
 
+app.UseCors(MyAllowSpecificOrigins);
+
 app.MapControllers();
 
 app.UseStaticFiles(new StaticFileOptions
 {
     FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "Photos")),
-    RequestPath="/Photos"
+    RequestPath = "/Photos"
 });
 
 

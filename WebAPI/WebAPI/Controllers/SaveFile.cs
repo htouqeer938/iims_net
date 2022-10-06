@@ -1,16 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using System.Data;
-using System.Data.SqlClient;
-using WebAPI.Models;
-using Microsoft.AspNetCore.Components.Forms;
-using System.IO;
-using Microsoft.Extensions.Hosting;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
 {

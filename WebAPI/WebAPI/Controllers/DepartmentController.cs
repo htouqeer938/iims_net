@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Data;
 using System.Data.SqlClient;
 using WebAPI.Models;
@@ -25,21 +19,28 @@ namespace WebAPI.Controllers
         [HttpGet]
         public JsonResult Get()
         {
-            string query = @"select * from Department";
-            DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("IIMSAppCon");
-            SqlDataReader myReader;
-            using (SqlConnection con = new SqlConnection(sqlDataSource))
-            {   
-                con.Open();
-                using(SqlCommand cmd = new SqlCommand(query, con))
+            try
+            {
+                string query = @"select * from Department";
+                DataTable table = new DataTable();
+                string sqlDataSource = _configuration.GetConnectionString("IIMSAppCon");
+                SqlDataReader myReader;
+                using (SqlConnection con = new SqlConnection(sqlDataSource))
                 {
-                    myReader = cmd.ExecuteReader();
-                    table.Load(myReader);
-                    myReader.Close();
-                    con.Close();
+                    con.Open();
+                    using (SqlCommand cmd = new SqlCommand(query, con))
+                    {
+                        myReader = cmd.ExecuteReader();
+                        table.Load(myReader);
+                        myReader.Close();
+                        con.Close();
+                    }
+                    return new JsonResult(table);
                 }
-                return new JsonResult(table);
+            }
+            catch (Exception)
+            {
+                return new JsonResult("Some Erro in API");
             }
         }
 
@@ -47,21 +48,28 @@ namespace WebAPI.Controllers
         [HttpGet("{id}")]
         public JsonResult Get(int id)
         {
-            string query = @"select * from Department where DepartmentId = "+ id +@"";
-            DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("IIMSAppCon");
-            SqlDataReader myReader;
-            using (SqlConnection con = new SqlConnection(sqlDataSource))
+            try
             {
-                con.Open();
-                using (SqlCommand cmd = new SqlCommand(query, con))
+                string query = @"select * from Department where DepartmentId = " + id + @"";
+                DataTable table = new DataTable();
+                string sqlDataSource = _configuration.GetConnectionString("IIMSAppCon");
+                SqlDataReader myReader;
+                using (SqlConnection con = new SqlConnection(sqlDataSource))
                 {
-                    myReader = cmd.ExecuteReader();
-                    table.Load(myReader);
-                    myReader.Close();
-                    con.Close();
+                    con.Open();
+                    using (SqlCommand cmd = new SqlCommand(query, con))
+                    {
+                        myReader = cmd.ExecuteReader();
+                        table.Load(myReader);
+                        myReader.Close();
+                        con.Close();
+                    }
+                    return new JsonResult(table);
                 }
-                return new JsonResult(table);
+            }
+            catch (Exception)
+            {
+                return new JsonResult("Some Erro in API");
             }
         }
 
@@ -69,23 +77,30 @@ namespace WebAPI.Controllers
         [HttpPost]
         public JsonResult Post(Department dep)
         {
-            string query = @"
-                insert into Department values ('"+ dep.DepartmentName +@"')
-            ";
-            DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("IIMSAppCon");
-            SqlDataReader myReader;
-            using (SqlConnection con = new SqlConnection(sqlDataSource))
+            try
             {
-                con.Open();
-                using (SqlCommand cmd = new SqlCommand(query, con))
+                string query = @"
+                    insert into Department values ('" + dep.DepartmentName + @"')
+                ";
+                DataTable table = new DataTable();
+                string sqlDataSource = _configuration.GetConnectionString("IIMSAppCon");
+                SqlDataReader myReader;
+                using (SqlConnection con = new SqlConnection(sqlDataSource))
                 {
-                    myReader = cmd.ExecuteReader();
-                    table.Load(myReader);
-                    myReader.Close();
-                    con.Close();
+                    con.Open();
+                    using (SqlCommand cmd = new SqlCommand(query, con))
+                    {
+                        myReader = cmd.ExecuteReader();
+                        table.Load(myReader);
+                        myReader.Close();
+                        con.Close();
+                    }
+                    return new JsonResult("Department created successfully!");
                 }
-                return new JsonResult("Department created successfully!");
+            }
+            catch (Exception)
+            {
+                return new JsonResult("Some Erro in API");
             }
         }
 
@@ -93,23 +108,30 @@ namespace WebAPI.Controllers
         [HttpPut("{id}")]
         public JsonResult Put(Department dep, int id)
         {
-            string query = @"
-                update Department set DepartmentName = ('" + dep.DepartmentName + @"') where DepartmentId = " + id + @"
-            ";
-            DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("IIMSAppCon");
-            SqlDataReader myReader;
-            using (SqlConnection con = new SqlConnection(sqlDataSource))
+            try
             {
-                con.Open();
-                using (SqlCommand cmd = new SqlCommand(query, con))
+                string query = @"
+                    update Department set DepartmentName = ('" + dep.DepartmentName + @"') where DepartmentId = " + id + @"
+                ";
+                DataTable table = new DataTable();
+                string sqlDataSource = _configuration.GetConnectionString("IIMSAppCon");
+                SqlDataReader myReader;
+                using (SqlConnection con = new SqlConnection(sqlDataSource))
                 {
-                    myReader = cmd.ExecuteReader();
-                    table.Load(myReader);
-                    myReader.Close();
-                    con.Close();
+                    con.Open();
+                    using (SqlCommand cmd = new SqlCommand(query, con))
+                    {
+                        myReader = cmd.ExecuteReader();
+                        table.Load(myReader);
+                        myReader.Close();
+                        con.Close();
+                    }
+                    return new JsonResult("Department updated successfully!");
                 }
-                return new JsonResult("Department updated successfully!");
+            }
+            catch (Exception)
+            {
+                return new JsonResult("Some Erro in API");
             }
         }
 
@@ -117,23 +139,30 @@ namespace WebAPI.Controllers
         [HttpDelete("{id}")]
         public JsonResult Delete(int id)
         {
-            string query = @"
-                delete from Department where DepartmentId = " + id + @"
-            ";
-            DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("IIMSAppCon");
-            SqlDataReader myReader;
-            using (SqlConnection con = new SqlConnection(sqlDataSource))
+            try
             {
-                con.Open();
-                using (SqlCommand cmd = new SqlCommand(query, con))
+                string query = @"
+                    delete from Department where DepartmentId = " + id + @"
+                ";
+                DataTable table = new DataTable();
+                string sqlDataSource = _configuration.GetConnectionString("IIMSAppCon");
+                SqlDataReader myReader;
+                using (SqlConnection con = new SqlConnection(sqlDataSource))
                 {
-                    myReader = cmd.ExecuteReader();
-                    table.Load(myReader);
-                    myReader.Close();
-                    con.Close();
+                    con.Open();
+                    using (SqlCommand cmd = new SqlCommand(query, con))
+                    {
+                        myReader = cmd.ExecuteReader();
+                        table.Load(myReader);
+                        myReader.Close();
+                        con.Close();
+                    }
+                    return new JsonResult("Department deleted successfully!");
                 }
-                return new JsonResult("Department deleted successfully!");
+            }
+            catch (Exception)
+            {
+                return new JsonResult("Some Erro in API");
             }
         }
     }
