@@ -1,7 +1,7 @@
 using Microsoft.Extensions.FileProviders;
 using Newtonsoft.Json.Serialization;
 // Cors
-var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+var MyAllowSpecificOrigins = "*";
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,7 +11,9 @@ builder.Services.AddCors(options =>
     options.AddPolicy(name: MyAllowSpecificOrigins,
        policy =>
           {
-              policy.WithOrigins("http://localhost:4200");
+              policy.WithOrigins("http://localhost:4200")
+                                                  .AllowAnyHeader()
+                                                  .AllowAnyMethod();
           });
 });
 
