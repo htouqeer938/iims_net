@@ -8,7 +8,7 @@ export class SharedService {
   readonly APIUrl = 'http://localhost:5290/api';
   readonly PhotoUrl = 'http://localhost:5290/Photos';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   getDepList(): Observable<any[]> {
     return this.http.get<any>(this.APIUrl + '/Department');
@@ -22,8 +22,8 @@ export class SharedService {
     return this.http.post(this.APIUrl + '/Department', val);
   }
 
-  updateDepartment(val: any) {
-    return this.http.put(this.APIUrl + '/Department', val);
+  updateDepartment(val: any, id: number) {
+    return this.http.put(this.APIUrl + `/Department/${id}`, val);
   }
 
   deleteDepartment(val: any) {

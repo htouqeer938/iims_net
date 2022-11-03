@@ -9,6 +9,6 @@
     Add
 </button>
 
-<button (click)="updateDepartment()" *ngIf="dep.DepartmentId != 0" class="btn btn-primary">
+<button (click)="updateDepartment(dep.departmentId)" *ngIf="dep.DepartmentId != 0" class="btn btn-primary">
     Update
 </button>

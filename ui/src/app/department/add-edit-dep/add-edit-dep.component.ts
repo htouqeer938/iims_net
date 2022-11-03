@@ -12,7 +12,7 @@ export class AddEditDepComponent implements OnInit {
   DepartmentName!: string;
   ngOnInit(): void {
     this.DepartmentId = this.dep.DepartmentId;
-    this.DepartmentName = this.dep.DepartmentName
+    this.DepartmentName = this.dep.DepartmentName;
   }
   addDepartment() {
     var val = { DepartmentId: this.DepartmentId, DepartmentName: this.DepartmentName };
@@ -20,9 +20,9 @@ export class AddEditDepComponent implements OnInit {
       alert(res.toString())
     })
   }
-  updateDepartment() {
-    var val = { DepartmentId: this.DepartmentId, DepartmentName: this.DepartmentName };
-    this.service.updateDepartment(val).subscribe(res => {
+  updateDepartment(id: number) {
+    var val = { DepartmentName: this.DepartmentName };
+    this.service.updateDepartment(val, id).subscribe(res => {
       alert(res.toString())
     })
   }
